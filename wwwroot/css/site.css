@@ -1,0 +1,70 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.background-div {
+    height: 100vh;
+    color: white;
+    background-size: cover;
+    background-position: center center;
+    animation: changeBackground 50s infinite;
+}
+
+@keyframes changeBackground {
+    0% {
+        background-image: url('/images/naslovna.jpeg');
+    }
+
+    20% {
+        background-image: url('/images/pocetna.jpg');
+    }
+
+    40% {
+        background-image: url('/images/slika.jpg');
+    }
+
+    60% {
+        background-image: url('/images/slika5.jfif');
+    }
+
+    80% {
+        background-image: url('/images/voz.jpg');
+    }
+
+    100% {
+        background-image: url('/images/naslovna.jpeg');
+    }
+}
+.background-div2 {
+    background-image: url('/images/pocetna.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px; /* Adjust padding as needed */
+}
+.background-div3 {
+    background-image: url('/images/voz.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px; /* Adjust padding as needed */
+}

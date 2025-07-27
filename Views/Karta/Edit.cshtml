@@ -1,0 +1,56 @@
+﻿@model KartaViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Uredi</h1>
+
+<h4>Karta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdKarta" />
+            <div class="form-group">
+                <label asp-for="StanicaPolazakNaziv" class="control-label"></label>
+                <input asp-for="StanicaPolazakNaziv" class="form-control" readonly="readonly" />
+                <span asp-validation-for="StanicaPolazakNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StanicaDolazakNaziv" class="control-label"></label>
+                <input asp-for="StanicaDolazakNaziv" class="form-control" readonly="readonly" />
+                <span asp-validation-for="StanicaDolazakNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PutnikId" class="control-label"></label>
+                <input asp-for="PutnikId" class="form-control" readonly="readonly" />
+                <span asp-validation-for="PutnikId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PutovanjeId" class="control-label"></label>
+                <input asp-for="PutovanjeId" class="form-control" readonly="readonly" />
+                <span asp-validation-for="PutovanjeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NacinPlacanja" class="control-label"></label>
+                <select asp-for="NacinPlacanja" class="form-control" asp-items="Html.GetEnumSelectList<NacinPlacanja>()"></select>
+                <span asp-validation-for="NacinPlacanja" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" style="margin-top:5px;" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

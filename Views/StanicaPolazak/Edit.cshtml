@@ -1,0 +1,38 @@
+﻿@model RailConnect.Models.StanicaPolazakViewModel
+
+@{
+    ViewData["Title"] = "Edit StanicaPolazak";
+}
+
+<h1>Edit</h1>
+
+<h4>StanicaPolazak</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdStanicaPolazak" />
+            <div class="form-group">
+                <label asp-for="Naziv" class="control-label"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv" class="text-danger"></span>
+            </div>
+            <input type="hidden" value="@ViewBag.GradId" name="gradId" /> <!-- Hidden input to hold gradId -->
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" style="margin-top:5px;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-gradId="@ViewBag.gradId" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,31 @@
+﻿@model RailConnect.Models.StanicaPutovanjeViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>StanicaPutovanje</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdPutovanje)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdPutovanje)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StanicaDolazakNaziv)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StanicaDolazakNaziv)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.IdStanicaPutovanje">Edit</a>
+    <a asp-action="Index" class="btn btn-primary" asp-route-putovanjeId="@ViewBag.PutovanjeId" asp-route-mjestoPolaska="@ViewBag.MjestoPolaska">Back to List</a>
+
+</div>

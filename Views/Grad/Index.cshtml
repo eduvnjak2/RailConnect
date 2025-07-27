@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RailConnect.Models.Grad>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        background-color: antiquewhite
+    }
+</style>
+
+<h1>Lista gradova u koje vozimo</h1>
+
+<p>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Zaposlenik"))
+
+    {
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.naziv)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.naziv)
+            </td>
+            <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Zaposlenik"))
+
+                {
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.idGrad">Edit</a>
+                        <a asp-action="Details" class="btn btn-info" asp-route-id="@item.idGrad">Details</a>
+                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.idGrad">Delete</a>
+                        <a asp-action="Index" class="btn btn-info" asp-controller="StanicaPolazak" asp-route-gradId="@item.idGrad">Stanice</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,169 @@
+﻿@model RailConnect.Models.PutovanjeIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        background-color: antiquewhite
+    }
+</style>
+<h1>Red vožnje</h1>
+
+<p>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Zaposlenik"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    }
+</p>
+
+<div>
+    <h2>Aktuelna Putovanja</h2>
+    <div class="filter-container">
+        <label>Filtriraj po datumu:</label>
+        <input type="date" id="filterDate" name="filterDate" class="form-control">
+        <label>Filtriraj po cijeni:</label>
+        <input type="number" id="filterPrice" name="filterPrice" placeholder="Cijena" class="form-control">
+        <button type="button" onclick="applyFilter()" class="btn btn-success">Filtriraj</button>
+        <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].Voz)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].VrijemePolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].VrijemeDolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].DatumPolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].StanicaPolazakNaziv)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].StanicaDolazakNaziv)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].Cijena)</th>
+                <th>@Html.DisplayNameFor(model => model.CurrentPutovanja[0].BrojMjesta)</th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="currentPutovanjaTableBody">
+            @foreach (var item in Model.CurrentPutovanja)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Voz)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VrijemePolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VrijemeDolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DatumPolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StanicaPolazakNaziv)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StanicaDolazakNaziv)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cijena)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BrojMjesta)</td>
+
+                    <td>
+                        <a class="btn btn-info" asp-action="Index" asp-controller="StanicaPutovanje" asp-route-putovanjeId="@item.IdPutovanje" asp-route-mjestoPolaska="@item.StanicaPolazakId">Stanice</a>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Zaposlenik"))
+                        {
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.IdPutovanje">Edit</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.IdPutovanje">Delete</a>
+                        }
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdPutovanje">Detaljno</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2>Prethodna Putovanja</h2>
+    <div class="filter-container">
+        <label>Sortriraj po ocjeni:</label>
+        <select id="sortOrder" name="sortOrder" onchange="applySort()" class="form-control">
+            <option value="lowest">Ocjena</option>
+            <option value="lowest">Lowest Rating</option>
+            <option value="highest">Highest Rating</option>
+        </select>
+        <button type="button" onclick="resetSort()" class="btn btn-secondary">Poništi sortiranje</button>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].Voz)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].Cijena)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].VrijemePolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].VrijemeDolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].DatumPolaska)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].BrojMjesta)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].StanicaPolazakNaziv)</th>
+                <th>@Html.DisplayNameFor(model => model.PreviousPutovanja[0].StanicaDolazakNaziv)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="previousPutovanjaTableBody">
+            @foreach (var item in Model.PreviousPutovanja)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Voz)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cijena)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VrijemePolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.VrijemeDolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DatumPolaska)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BrojMjesta)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StanicaPolazakNaziv)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StanicaDolazakNaziv)</td>
+                    <td>
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.IdPutovanje">Detaljno</a>
+                        <a class="btn btn-info" asp-action="Statistika" asp-route-putovanjeId="@item.IdPutovanje">Statistika</a>
+                        <a class="btn btn-info" asp-controller="Recenzija" asp-action="Index" asp-route-putovanjeId="@item.IdPutovanje">Recenzije</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function applyFilter() {
+        var filterDate = document.getElementById("filterDate").value;
+        var filterPrice = document.getElementById("filterPrice").value;
+
+        window.location.href = `?filterDate=${filterDate}&filterPrice=${filterPrice}`;
+    }
+
+    function resetFilters() {
+        window.location.href = '?';
+    }
+
+    function applySort() {
+        var sortOrder = document.getElementById("sortOrder").value;
+        window.location.href = `?sortOrder=${sortOrder}`;
+    }
+
+    function resetSort() {
+        window.location.href = '?';
+    }
+</script>
+
+<style>
+    .filter-container {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        display: inline-block;
+        width: 200px;
+        margin-right: 20px;
+    }
+
+    .btn {
+        margin-top: 10px;
+    }
+
+    .table-striped {
+        margin-top: 20px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .btn {
+        margin: 2px;
+    }
+</style>

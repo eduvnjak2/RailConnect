@@ -1,0 +1,94 @@
+﻿@model RailConnect.Models.PutovanjeViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Kreiraj novo putvovanje</h1>
+
+<h4>Putovanje</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Voz" class="control-label"></label>
+                <select asp-for="Voz" class="form-control" asp-items="ViewBag.Voz"></select>
+                <span asp-validation-for="Voz" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StanicaPolazakNaziv" class="control-label"></label>
+                <select asp-for="StanicaPolazakNaziv" class="form-control" asp-items="ViewBag.MjestoPolaska"></select>
+                <span asp-validation-for="StanicaPolazakNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StanicaDolazakNaziv" class="control-label"></label>
+                <select asp-for="StanicaDolazakNaziv" class="form-control" asp-items="ViewBag.MjestoDolaska"></select>
+                <span asp-validation-for="StanicaDolazakNaziv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cijena" class="control-label"></label>
+                <input asp-for="Cijena" class="form-control" />
+                <span asp-validation-for="Cijena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VrijemePolaska" class="control-label"></label>
+                <input asp-for="VrijemePolaska" type="time" class="form-control" />
+                <span asp-validation-for="VrijemePolaska" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VrijemeDolaska" class="control-label"></label>
+                <input asp-for="VrijemeDolaska" type="time" class="form-control" />
+                <span asp-validation-for="VrijemeDolaska" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DatumPolaska" class="control-label"></label>
+                <input asp-for="DatumPolaska" type="date" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="DatumPolaska" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="BrojMjesta" class="form-control" type="hidden"/>
+                <span asp-validation-for="BrojMjesta" class="text-danger" type="hidden"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-top:5px;"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("putovanjeForm").addEventListener("submit", function(event) {
+            var isValid = true;
+
+            var polazakId = document.getElementById("StanicaPolazakId").value;
+            var dolazakId = document.getElementById("StanicaDolazakId").value;
+            var vrijemePolaska = document.getElementById("VrijemePolaska").value;
+            var vrijemeDolaska = document.getElementById("VrijemeDolaska").value;
+
+            if (!polazakId || !dolazakId || polazakId === dolazakId) {
+                isValid = false;
+                alert("Greska u odabiru stanica.");
+            }
+
+            if (vrijemePolaska === vrijemeDolaska) {
+                isValid = false;
+                alert("Vrijeme polaska i vrijeme dolaska neispravni.");
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}

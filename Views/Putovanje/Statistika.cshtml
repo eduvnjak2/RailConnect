@@ -1,0 +1,30 @@
+﻿@model RailConnect.Models.PutovanjeStatistikaViewModel
+
+@{
+    ViewData["Title"] = "Statistika Putovanja";
+}
+
+<h1>Statistika Putovanja</h1>
+
+<div>
+    <h4>Prosječna ocjena: @Model.AverageRating.ToString("0.00")</h4>
+    <h4>Kapacitet voza: @Model.KapacitetVoz</h4>
+    <h4>Broj mjesta nepopunjenih: @Model.BrojMjesta</h4>
+    <h4>Popunjenost: @Model.popunjenost%</h4>
+</div>
+
+<div>
+    <h3>Top 3 Recenzije</h3>
+    <ul>
+        @foreach (var recenzija in Model.TopRecenzije)
+        {
+            <li>
+                <strong>@recenzija.Ocjena</strong>: @recenzija.Komentar
+            </li>
+        }
+    </ul>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+</div>

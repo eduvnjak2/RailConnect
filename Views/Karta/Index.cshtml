@@ -1,0 +1,217 @@
+﻿@model RailConnect.Models.KartaIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        background-color:antiquewhite
+    }
+</style>
+<h1>Karte</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+<div>
+    <h2>Aktuelna Putovanja</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].StanicaPolazakNaziv)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].StanicaDolazakNaziv)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].PutnikId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].PutovanjeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].DatumPutovanja)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidKartas[0].NacinPlacanja)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ValidKartas)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StanicaPolazakNaziv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StanicaDolazakNaziv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PutnikId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PutovanjeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DatumPutovanja)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NacinPlacanja)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.IdKarta">Edit</a> 
+                        <a asp-action="Details" class="btn btn-info" asp-route-id="@item.IdKarta">Details</a> 
+                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdKarta">Delete</a>
+                        <button class="confirmPurchaseButton btn btn-sm btn-primary" data-user-id="@ViewBag.UserId" style="margin-top: 5px;">Potvrdi kupnju</button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2>Prethodna Putovanja</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].StanicaPolazakNaziv)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].StanicaDolazakNaziv)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].PutnikId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].PutovanjeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].DatumPutovanja)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PreviousKartas[0].NacinPlacanja)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PreviousKartas)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StanicaPolazakNaziv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StanicaDolazakNaziv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PutnikId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PutovanjeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DatumPutovanja)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NacinPlacanja)
+                    </td>
+                    <td>
+                        <a asp-action="Details" class="btn btn-info" asp-route-id="@item.IdKarta">Details</a> 
+                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.IdKarta">Delete</a> 
+                        <a asp-action="Index" class="btn btn-info" asp-controller="Recenzija" asp-route-putovanjeId="@item.PutovanjeId" style="margin-top:5px;">Recenzija</a> 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!-- Modal Confirmation Dialog -->
+<div id="confirmationDialog" class="confirmation-modal" style="display: none;">
+    <div class="confirmation-content">
+        <h4>Jeste li sigurni?</h4>
+        <button id="yesButton" class="btn btn-primary">Yes</button>
+        <button id="noButton" class="btn btn-secondary">No</button>
+    </div>
+</div>
+<input type="hidden" id="userId" value="@ViewBag.UserId" />
+
+
+
+<script>
+    document.querySelectorAll(".confirmPurchaseButton").forEach(button => {
+        button.addEventListener("click", function () {
+            // Show the modal confirmation dialog
+            document.getElementById("confirmationDialog").style.display = "block";
+        });
+    });
+
+    document.getElementById("yesButton").addEventListener("click", function () {
+        // Hide the modal confirmation dialog
+        document.getElementById("confirmationDialog").style.display = "none";
+
+        var userId2 = document.getElementById("userId").value;
+        // Perform AJAX request to send email
+        fetch('/Karta/SendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '@Html.AntiForgeryToken()'
+            },
+            body: JSON.stringify({ userId: userId2 })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Email uspjesno poslan.');
+                } else {
+                    alert('Failed to send email.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Neuspjelo slanje email-a.');
+            });
+    });
+
+    document.getElementById("noButton").addEventListener("click", function () {
+        // Hide the modal confirmation dialog
+        document.getElementById("confirmationDialog").style.display = "none";
+    });
+
+</script>
+
+<style>
+    .confirmation-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .confirmation-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .confirmation-modal .btn {
+        margin: 5px;
+    }
+
+    .disabled-button {
+        background-color: gray;
+        color: white;
+        cursor: not-allowed;
+    }
+</style>

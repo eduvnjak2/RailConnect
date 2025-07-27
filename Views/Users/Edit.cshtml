@@ -1,0 +1,74 @@
+﻿@model RailConnect.Models.UserEditViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h1>Uredi korisnika</h1>
+
+<h4>Korisnik</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Ime" class="control-label"></label>
+                <input asp-for="Ime" class="form-control" />
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prezime" class="control-label"></label>
+                <input asp-for="Prezime" class="form-control" />
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="file" id="pictureInput" class="form-control" accept="image/*" />
+                <label for="pictureInput">Slika</label>
+            </div>
+            <div id="picturePreview" class="mb-3">
+                <img id="picturePreviewImg" src="#" alt="Your image" style="display: none; max-width: 100%; height: auto;" />
+            </div>
+            <input asp-for="Slika" id="Slika" autocomplete="off" aria-required="true" placeholder="Slika" style="visibility:hidden;"/>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select asp-for="Role" class="form-control" asp-items="ViewBag.RolesList"></select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" style="margin-top:5px;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('pictureInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('picturePreviewImg').src = e.target.result;
+                    document.getElementById('picturePreviewImg').style.display = 'block';
+                    document.getElementById('Slika').value = e.target.result.split(',')[1]; // Base64 without metadata
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

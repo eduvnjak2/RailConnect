@@ -1,0 +1,43 @@
+﻿@model RailConnect.Models.StanicaPutovanjeViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Stanica-Putovanje</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="IdPutovanje" class="control-label"></label>
+                <input asp-for="IdPutovanje" class="form-control" readonly="readonly" value="@Model.IdPutovanje" />
+                <span asp-validation-for="IdPutovanje" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdStanicaDolazak" class="control-label"></label>
+                <select asp-for="IdStanicaDolazak" class="form-control" asp-items="ViewBag.IdStanicaDolazak"></select>
+                <span asp-validation-for="IdStanicaDolazak" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-top:5px;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-putovanjeId="@ViewBag.PutovanjeId" asp-route-mjestoPolaska="@ViewBag.MjestoPolaska" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

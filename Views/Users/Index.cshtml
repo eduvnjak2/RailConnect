@@ -1,0 +1,79 @@
+﻿@model IEnumerable<RailConnect.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Users Index";
+    var currentSearch = ViewData["CurrentSearch"]?.ToString();
+    var currentRole = ViewData["CurrentRole"]?.ToString();
+}
+<style>
+    body {
+        background-color: antiquewhite
+    }
+</style>
+
+<h1>Upravljanje korisnicima</h1>
+
+<form asp-action="Index" method="get" class="form-inline mb-3" style="display: flex; align-items: center; justify-content: space-between;">
+    <div class="form-group mr-2">
+        <label for="searchString" class="sr-only">Pretraga:</label>
+        <input type="text" id="searchString" name="searchString" value="@currentSearch" class="form-control" placeholder="Pretraga po imenu ili prezimenu" style="width: 300px;" />
+    </div>
+    <div class="form-group mr-2">
+        <label for="roleFilter">Filter po Role-u:</label>
+        <select id="roleFilter" name="roleFilter" class="form-control" style="width: 150px;">
+            <option value="">All Roles</option>
+            @foreach (var role in (List<SelectListItem>)ViewBag.RolesList)
+            {
+                @if (role.Value == currentRole)
+                {
+                    <option value="@role.Value" selected>@role.Text</option>
+                }
+                else
+                {
+                    <option value="@role.Value">@role.Text</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary mr-2">Filter</button>
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Users")'">Reset</button>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Slika)</th>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Ime)</th>
+            <th>@Html.DisplayNameFor(model => model.Prezime)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Role)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(user.Slika))
+                    {
+                        <img src="data:image/jpeg;base64,@user.Slika" alt="Profile Picture" style="width:50px;height:50px;" />
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => user.Id)</td>
+                <td>@Html.DisplayFor(modelItem => user.Ime)</td>
+                <td>@Html.DisplayFor(modelItem => user.Prezime)</td>
+                <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                <td>@Html.DisplayFor(modelItem => user.Role)</td>
+                <td>
+                    <a asp-action="Details" class="btn btn-info" asp-route-id="@user.Id">Details</a> 
+                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@user.Id">Edit</a> 
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@user.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

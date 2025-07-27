@@ -1,0 +1,24 @@
+﻿@model RailConnect.Models.Grad
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Grad</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.naziv)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.naziv)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.idGrad" class="btn btn-warning" style="margin-top:5px;">Edit</a>
+    <a asp-action="Index" class="btn btn-primary" style="margin-top:5px;">Back to List</a>
+</div>

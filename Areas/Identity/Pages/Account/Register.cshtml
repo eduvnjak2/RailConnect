@@ -1,0 +1,82 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registracija";
+}
+
+
+<style>
+    body {
+        background-color: antiquewhite
+    }
+</style>
+<div class="background-div2">
+    <div class="row">
+        <div class="col-md-4">
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <h2>Napravite novi profil.</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Ime" class="form-control" autocomplete="off" aria-required="true" placeholder="Ime" />
+                    <label asp-for="Input.Ime">Ime</label>
+                    <span asp-validation-for="Input.Ime" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Prezime" class="form-control" autocomplete="off" aria-required="true" placeholder="Prezime" />
+                    <label asp-for="Input.Prezime">Prezime</label>
+                    <span asp-validation-for="Input.Prezime" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.BrojKartice" class="form-control" autocomplete="off" aria-required="true" placeholder="Broj Kartice" />
+                    <label asp-for="Input.BrojKartice">Broj Kartice</label>
+                    <span asp-validation-for="Input.BrojKartice" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="file" id="pictureInput" class="form-control" accept="image/*" />
+                    <label for="pictureInput">Slika</label>
+                </div>
+                <div id="picturePreview" class="mb-3">
+                    <img id="picturePreviewImg" src="#" alt="Your image" style="display: none; max-width: 100%; height: auto;" />
+                </div>
+                <input asp-for="Input.Slika" id="Slika" autocomplete="off" aria-required="true" placeholder="Slika" style="visibility:hidden;" />
+
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('pictureInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('picturePreviewImg').src = e.target.result;
+                    document.getElementById('picturePreviewImg').style.display = 'block';
+                    document.getElementById('Slika').value = e.target.result.split(',')[1]; // Base64 without metadata
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}
+

@@ -1,0 +1,36 @@
+﻿@model RailConnect.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<h1>Obriši korisnika</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <dt class="col-sm-2">Ime</dt>
+        <dd class="col-sm-10">@Model.Ime</dd>
+
+        <dt class="col-sm-2">Prezime</dt>
+        <dd class="col-sm-10">@Model.Prezime</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Slika</dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Slika" alt="Slika korisnika" style="max-width: 100px;" />
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+    </form>
+</div>
